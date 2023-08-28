@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zharexxx Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        .copyright {
+        color: red;
+
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #content {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #registration-form, #cabinet {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+        }
+
+        #cabinet {
+            display: none;
+        }
+
+        #footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Welcome to Zharexxx Browser</h1>
+    </div>
+
+    <div id="content">
+        <h2>About Me</h2>
+        <p>Nickname: zharexxx</p>
+        <p>Group: ZHRXXgroup</p>
+        <p>Email: jmoritz38@gmail.com</p>
+    </div>
+
+    <div id="system-info">
+        <h2>System Information</h2>
+        <p>User Agent: <span id="user-agent"></span></p>
+        <p>Screen Resolution: <span id="screen-resolution"></span></p>
+        <p>Frames Per Second: <span id="fps"></span></p>
+        <p>Computer Name: <span id="computer-name"></span></p>
+        <p>Operating System: <span id="operating-system"></span></p>
+        <p>Browser Name: <span id="browser-name"></span></p>
+        <p>Language: <span id="language"></span></p>
+        <p>Cookies Enabled: <span id="cookies-enabled"></span></p>
+        <p>Online Status: <span id="online-status"></span></p>
+        <p>Platform: <span id="platform"></span></p>
+        <p>Do Not Track: <span id="do-not-track"></span></p>
+        <p>Device Type: <span id="device-type"></span></p>
+        <p>Timezone: <span id="timezone"></span></p>
+        <p>Connection Type: <span id="connection-type"></span></p>
+        <p>Geolocation: <span id="geolocation"></span></p>
+        <p>WebGL Support: <span id="webgl-support"></span></p>
+        <!-- Add more system info fields here -->
+    </div>
+
+    <div id="browser-info">
+        <h2>About Zharexxx Browser</h2>
+        <p>Zharexxx Browser is a customized web browser created by zharexxx from ZHRXXgroup. It provides a simple way to access the internet and gather system information.</p>
+        <ul>
+            <li>Lightning-fast page loading for efficient browsing.</li>
+        <li>Enhanced security measures to protect user privacy and data.</li>
+        <li>Seamless tab management for multitasking and organization.</li>
+        <li>Integrated search bar powered by leading search engines.</li>
+        <li>Customizable user interface with themes and extensions.</li>
+        <li>Private browsing mode for confidential internet usage.</li>
+        <li>Effortless bookmarking and history management.</li>
+        <li>Responsive design for optimal viewing on all devices.</li>
+        <li>Smooth video streaming and multimedia playback.</li>
+        <li>Support for modern web technologies and standards.</li>
+        <li>Regular updates for improved performance and new features.</li>
+        <li>Compatibility with popular web applications.</li>
+        <li>Efficient keyboard shortcuts for quick navigation.</li>
+        <li>User-friendly settings menu for personalized browsing.</li>
+        <li>Efficient resource management for reduced system impact.</li>
+
+
+        </ul>
+    </div>
+
+    <div id="footer">
+        <p class="copyright">&copy; 2020-2023 ZHRXXgroup</p>
+    </div>
+
+    <script>
+        // Get user agent and display it
+        const userAgent = navigator.userAgent;
+        document.getElementById('user-agent').textContent = userAgent;
+
+        // Get screen resolution and display it
+        const screenWidth = window.screen.width;
+        const screenHeight = window.screen.height;
+        document.getElementById('screen-resolution').textContent = `${screenWidth}x${screenHeight}`;
+
+         // Get frames per second (FPS)
+        let fpsCount = 0;
+        let startTime = performance.now();
+        function updateFPS() {
+            const currentTime = performance.now();
+            fpsCount++;
+            if (currentTime - startTime >= 1000) {
+                const fps = fpsCount;
+                document.getElementById('fps').textContent = fps;
+                fpsCount = 0;
+                startTime = currentTime;
+            }
+            requestAnimationFrame(updateFPS);
+        }
+        updateFPS();
+
+        // Get computer name (Note: This might not work on all systems)
+        document.getElementById('computer-name').textContent = window.location.hostname || 'Unknown';
+
+        // Get operating system
+        const os = getOperatingSystem(userAgent);
+        document.getElementById('operating-system').textContent = os || 'Unknown';
+
+        // Get browser name
+        const browserName = getBrowserName(userAgent);
+        document.getElementById('browser-name').textContent = browserName || 'Unknown';
+
+        // Get browser language
+        const language = navigator.language || 'Unknown';
+        document.getElementById('language').textContent = language;
+
+        // Check if cookies are enabled
+        const cookiesEnabled = navigator.cookieEnabled ? 'Yes' : 'No';
+        document.getElementById('cookies-enabled').textContent = cookiesEnabled;
+
+        // Check online status
+        const onlineStatus = navigator.onLine ? 'Online' : 'Offline';
+        document.getElementById('online-status').textContent = onlineStatus;
+
+        // Get platform
+        const platform = navigator.platform || 'Unknown';
+        document.getElementById('platform').textContent = platform;
+
+        // Check Do Not Track status
+        const doNotTrack = navigator.doNotTrack || 'Unknown';
+        document.getElementById('do-not-track').textContent = doNotTrack;
+
+        // Function to extract operating system from user agent
+        function getOperatingSystem(userAgent) {
+            if (/Windows/.test(userAgent)) {
+                return 'Windows';
+            } else if (/Mac OS|Macintosh/.test(userAgent)) {
+                return 'Mac OS';
+            } else if (/Linux/.test(userAgent)) {
+                return 'Linux';
+            } else if (/Android/.test(userAgent)) {
+                return 'Android';
+            } else if (/iOS/.test(userAgent)) {
+                return 'iOS';
+            }
+            return null;
+        }
+
+        // Function to extract browser name from user agent
+        function getBrowserName(userAgent) {
+            if (/MSIE|Trident/.test(userAgent)) {
+                return 'Internet Explorer';
+            } else if (/Edge/.test(userAgent)) {
+                return 'Microsoft Edge';
+            } else if (/Opera/.test(userAgent)) {
+                return 'Opera';
+            }
+            return null;
+            }
+             // Function to get device type (replace with actual logic)
+    function getDeviceType() {
+        return 'Desktop'; // Replace with actual logic
+    }
+
+    // Function to get timezone (replace with actual logic)
+    function getTimezone() {
+        return new Date().getTimezoneOffset() / -60; // Replace with actual logic
+    }
+
+    // Function to get connection type (replace with actual logic)
+    function getConnectionType() {
+        return navigator.connection.type || 'Unknown'; // Replace with actual logic
+    }
+
+    // Function to get geolocation (replace with actual logic)
+    function getGeolocation() {
+        return 'Latitude: ' + 'x.xxxxx' + ', Longitude: ' + 'y.yyyyy'; // Replace with actual logic
+    }
+
+    // Function to check WebGL support
+    function checkWebGLSupport() {
+        const canvas = document.createElement('canvas');
+        const webglContext = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        return webglContext ? 'Supported' : 'Not Supported';
+    }
+
+    // Display additional system information
+    document.getElementById('device-type').textContent = getDeviceType();
+    document.getElementById('timezone').textContent = getTimezone() + ' hours';
+    document.getElementById('connection-type').textContent = getConnectionType();
+    document.getElementById('geolocation').textContent = getGeolocation();
+    document.getElementById('webgl-support').textContent = checkWebGLSupport();
+    </script>
+</body>
+</html>

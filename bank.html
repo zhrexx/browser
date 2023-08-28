@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ZHRXX Bank</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f2f2f2;
+
+        }
+
+        #header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #content {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #registration-form, #cabinet {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+        }
+
+        #cabinet {
+            display: none;
+        }
+
+        #footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+
+
+
+        #login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Welcome to ZHRXX Bank</h1>
+    </div>
+
+    <div id="content">
+        <div id="registration-form">
+            <h2>Register</h2>
+            <input type="text" id="reg-username" placeholder="Username">
+            <input type="password" id="reg-password" placeholder="Password">
+            <input type="text" id="reg-balance" placeholder="Balance">
+            <button id="register-button">Register</button>
+        </div>
+
+        <div id="login-form">
+            <h2>Login</h2>
+            <input type="text" id="login-username" placeholder="Username">
+            <input type="password" id="login-password" placeholder="Password">
+            <button id="login-button">Login</button>
+        </div>
+
+        <div id="cabinet">
+            <h2>Cabinet</h2>
+            <p>Username: <span id="cabinet-username"></span></p>
+            <p>Balance: <span id="cabinet-balance"></span></p>
+        </div>
+    </div>
+
+    <div id="footer">
+        <p>&copy; 2020-2023 ZHRXXgroup</p>
+    </div>
+
+    <script>
+        const registrationForm = document.getElementById('registration-form');
+        const loginForm = document.getElementById('login-form');
+        const cabinet = document.getElementById('cabinet');
+        const registerButton = document.getElementById('register-button');
+        const loginButton = document.getElementById('login-button');
+        const cabinetUsername = document.getElementById('cabinet-username');
+        const cabinetBalance = document.getElementById('cabinet-balance');
+
+        registerButton.addEventListener('click', () => {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            const balance = document.getElementById('reg-balance').value;
+
+            const userData = `${username},${password},${balance}\n`;
+            saveUserData(userData);
+
+            registrationForm.style.display = 'none';
+            loginForm.style.display = 'block';
+        });
+
+        loginButton.addEventListener('click', () => {
+            const loginUsername = document.getElementById('login-username').value;
+            const loginPassword = document.getElementById('login-password').value;
+
+            const userExists = checkUserExists(loginUsername, loginPassword);
+
+            if (userExists) {
+                loginForm.style.display = 'none';
+                cabinet.style.display = 'block';
+                cabinetUsername.textContent = loginUsername;
+                cabinetBalance.textContent = `$${getBalance(loginUsername)}`;
+            } else {
+                alert('Invalid login credentials');
+            }
+        });
+
+        function saveUserData(data) {
+            const fs = require('fs');
+            fs.appendFileSync('bankacc.txt', data);
+        }
+
+        function checkUserExists(username, password) {
+            const fs = require('fs');
+            const userData = fs.readFileSync('bankacc.txt', 'utf8');
+            const users = userData.split('\n');
+            for (const user of users) {
+                const [savedUsername, savedPassword] = user.split(',');
+                if (username === savedUsername && password === savedPassword) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function getBalance(username) {
+            const fs = require('fs');
+            const userData = fs.readFileSync('bankacc.txt', 'utf8');
+            const users = userData.split('\n');
+            for (const user of users) {
+                const [savedUsername, , balance] = user.split(',');
+                if (username === savedUsername) {
+                    return balance;
+                }
+            }
+            return 'N/A';
+        }
+    </script>
+</body>
+</html>

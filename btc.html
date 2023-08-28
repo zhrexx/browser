@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Bitcoin Price Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #price-container {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #price {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #refresh-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="price-container">
+        <h1>Real-Time Bitcoin Price Tracker</h1>
+        <p id="price">Loading...</p>
+        <button id="refresh-btn">Refresh</button>
+    </div>
+
+    <script>
+        const priceElement = document.getElementById('price');
+        const refreshButton = document.getElementById('refresh-btn');
+
+        async function fetchBitcoinPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const data = await response.json();
+                const bitcoinPrice = data.bitcoin.usd;
+                priceElement.textContent = `Bitcoin Price: $${bitcoinPrice}`;
+            } catch (error) {
+                console.error('Error fetching Bitcoin price:', error);
+                priceElement.textContent = 'Error fetching price';
+            }
+        }
+
+        fetchBitcoinPrice(); // Fetch initial price
+        setInterval(fetchBitcoinPrice, 5000); // Update every 5 seconds
+        refreshButton.addEventListener('click', fetchBitcoinPrice);
+    </script>
+</body>
+</html>
